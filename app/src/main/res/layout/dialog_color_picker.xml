@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <EditText
+        android:id="@+id/edit_text_red"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Красный (0-255)"
+        android:inputType="number"/>
+
+    <EditText
+        android:id="@+id/edit_text_green"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Зеленый (0-255)"
+        android:inputType="number"/>
+
+    <EditText
+        android:id="@+id/edit_text_blue"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Синий (0-255)"
+        android:inputType="number"/>
+
+    <SeekBar
+        android:id="@+id/seek_bar_red"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:max="255"
+        android:progress="0"/>
+
+    <SeekBar
+        android:id="@+id/seek_bar_green"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:max="255"
+        android:progress="0"/>
+
+    <SeekBar
+        android:id="@+id/seek_bar_blue"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:max="255"
+        android:progress="0"/>
+
+    <View
+        android:id="@+id/preview_color_view"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="16dp"
+        android:background="#FFFFFF"/>
+
+    <Button
+        android:id="@+id/button_confirm"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Подтвердить <3"
+        android:layout_gravity="center"/>
+</LinearLayout>
