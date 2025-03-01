@@ -10,21 +10,24 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Красный (0-255)"
-        android:inputType="number"/>
+        android:inputType="number"
+        android:text="0"/>
 
     <EditText
         android:id="@+id/edit_text_green"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Зеленый (0-255)"
-        android:inputType="number"/>
+        android:inputType="number"
+        android:text="0"/>
 
     <EditText
         android:id="@+id/edit_text_blue"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Синий (0-255)"
-        android:inputType="number"/>
+        android:inputType="number"
+        android:text="0"/>
 
     <SeekBar
         android:id="@+id/seek_bar_red"
@@ -58,6 +61,6 @@
         android:id="@+id/button_confirm"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Подтвердить <3"
+        android:text="Подтвердить"
         android:layout_gravity="center"/>
 </LinearLayout>
