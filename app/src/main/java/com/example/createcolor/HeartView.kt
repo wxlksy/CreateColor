@@ -8,35 +8,41 @@ import android.graphics.Path
 import android.util.AttributeSet
 import android.view.View
 
-class HeartView (context: Context, attrs: AttributeSet) : View(context, attrs)
+class HeartView(context: Context, attrs: AttributeSet) : View(context, attrs)
 {
+
     private val paint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
         style = Paint.Style.FILL
         color = Color.RED
     }
 
     var color: Int = Color.RED
-    set(value) {
-        field = value
-        paint.color = value
-        invalidate()
-    }
-
-    override fun onDraw(canvas: Canvas?)
-    {
-        super.onDraw(canvas)
-        val width = width.toFloat()
-        val height = height.toFloat()
-        val path = Path().apply {
-            moveTo(width / 2, height / 5)
-            cubicTo(width * 5 / 14, height / 14,
-                width / 28, height * 2 / 5,
-                width / 2, height * 2 / 3)
-            cubicTo(width * 27 / 28, height * 2 / 5,
-                width * 12 / 14, height / 14,
-                width / 2, height / 5)
+        set(value) {
+            field = value
+            paint.color = value
+            invalidate()
         }
 
-        if (canvas != null) { canvas.drawPath(path, paint) }
+    override fun onDraw(canvas: Canvas)
+    {
+        super.onDraw(canvas)
+
+        val width = width.toFloat()
+        val height = height.toFloat()
+
+        val scaleFactor = 0.8f
+        val scaledWidth = width * scaleFactor
+        val scaledHeight = height * scaleFactor
+
+        val path = Path().apply {
+            moveTo(scaledWidth / 2, scaledHeight * 0.3f)
+            cubicTo(scaledWidth * 0.4f, scaledHeight * 0.1f,
+                scaledWidth * 0.1f, scaledHeight * 0.3f,
+                scaledWidth / 2, scaledHeight * 0.5f)
+            cubicTo(scaledWidth * 0.9f, scaledHeight * 0.3f,
+                scaledWidth * 0.6f, scaledHeight * 0.1f,
+                scaledWidth / 2, scaledHeight * 0.3f)
+        }
+        canvas.drawPath(path, paint)
     }
 }

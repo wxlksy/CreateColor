@@ -58,6 +58,6 @@
         android:id="@+id/button_confirm"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Подтвердить <3"
+        android:text="Подтвердить"
         android:layout_gravity="center"/>
 </LinearLayout>
