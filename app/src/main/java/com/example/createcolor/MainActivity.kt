@@ -1,89 +1,84 @@
-package com.example.createcolor
-
+import android.app.AlertDialog
+import android.content.Context
+import android.content.SharedPreferences
 import android.graphics.Color
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.View
-import android.widget.EditText
 import android.widget.SeekBar
-import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import com.example.createcolor.databinding.ActivityMainBinding
 import com.example.createcolor.databinding.DialogColorPickerBinding
 
-class MainActivity : AppCompatActivity()
-{
+class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
-    private var currentColor: Int = Color.RED
+    private var currentColor: Int = Color.BLACK
+    private lateinit var sharedPreferences: SharedPreferences
 
-    override fun onCreate(savedInstanceState: Bundle?)
-    {
+    override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        sharedPreferences = getPreferences(Context.MODE_PRIVATE)
 
         binding.buttonOpenDialog.setOnClickListener {
             showColorPickerDialog()
         }
     }
 
-    private fun showColorPickerDialog()
-    {
+    private fun showColorPickerDialog() {
         val dialogBinding = DialogColorPickerBinding.inflate(layoutInflater)
         val dialog = AlertDialog.Builder(this)
-            .setTitle("Выбери цвет")
+            .setTitle("Pick a Color")
             .setView(dialogBinding.root)
             .create()
 
-        with(dialogBinding)
-        {
-            try
-            {
-                val initialRed = editTextRed.text.toString().toIntOrNull() ?: 0
-                val initialGreen = editTextGreen.text.toString().toIntOrNull() ?: 0
-                val initialBlue = editTextBlue.text.toString().toIntOrNull() ?: 0
+        with(dialogBinding) {
+            val savedRed = sharedPreferences.getInt("red", 0)
+            val savedGreen = sharedPreferences.getInt("green", 0)
+            val savedBlue = sharedPreferences.getInt("blue", 0)
 
-                seekBarRed.progress = initialRed
-                seekBarGreen.progress = initialGreen
-                seekBarBlue.progress = initialBlue
+            seekBarRed.progress = savedRed
+            seekBarGreen.progress = savedGreen
+            seekBarBlue.progress = savedBlue
 
-                updatePreviewColor(previewColorView, seekBarRed, seekBarGreen, seekBarBlue)
+            // Update preview color
+            updatePreviewColor(previewColorView, seekBarRed, seekBarGreen, seekBarBlue)
 
-                seekBarRed.setOnSeekBarChangeListener(createSeekBarListener(editTextRed, previewColorView, seekBarRed, seekBarGreen, seekBarBlue))
-                seekBarGreen.setOnSeekBarChangeListener(createSeekBarListener(editTextGreen, previewColorView, seekBarRed, seekBarGreen, seekBarBlue))
-                seekBarBlue.setOnSeekBarChangeListener(createSeekBarListener(editTextBlue, previewColorView, seekBarRed, seekBarGreen, seekBarBlue))
+            seekBarRed.setOnSeekBarChangeListener(createSeekBarListener(previewColorView, seekBarRed, seekBarGreen, seekBarBlue))
+            seekBarGreen.setOnSeekBarChangeListener(createSeekBarListener(previewColorView, seekBarRed, seekBarGreen, seekBarBlue))
+            seekBarBlue.setOnSeekBarChangeListener(createSeekBarListener(previewColorView, seekBarRed, seekBarGreen, seekBarBlue))
 
-                buttonConfirm.setOnClickListener {
-                    currentColor = Color.rgb(
-                        seekBarRed.progress,
-                        seekBarGreen.progress,
-                        seekBarBlue.progress
-                    )
-                    binding.heartView.color = currentColor
-                    dialog.dismiss()
-                }
-            }
+            buttonConfirm.setOnClickListener {
+                currentColor = Color.rgb(
+                    seekBarRed.progress,
+                    seekBarGreen.progress,
+                    seekBarBlue.progress
+                )
+                binding.heartView.color = currentColor
 
-            catch (e: Exception)
-            {
-                Log.e("DialogWindow", "Error", e)
+                // Save the selected values
+                sharedPreferences.edit()
+                    .putInt("red", seekBarRed.progress)
+                    .putInt("green", seekBarGreen.progress)
+                    .putInt("blue", seekBarBlue.progress)
+                    .apply()
+
+                dialog.dismiss()
             }
         }
+
         dialog.show()
     }
 
     private fun createSeekBarListener(
-        editText: EditText,
         previewColorView: View,
         seekBarRed: SeekBar,
         seekBarGreen: SeekBar,
         seekBarBlue: SeekBar
-    ) = object : SeekBar.OnSeekBarChangeListener
-    {
-        override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean)
-        {
-            editText.setText(progress.toString())
+    ) = object : SeekBar.OnSeekBarChangeListener {
+        override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
             updatePreviewColor(previewColorView, seekBarRed, seekBarGreen, seekBarBlue)
         }
 
@@ -91,8 +86,7 @@ class MainActivity : AppCompatActivity()
         override fun onStopTrackingTouch(seekBar: SeekBar) {}
     }
 
-    private fun updatePreviewColor(previewColorView: View, seekBarRed: SeekBar, seekBarGreen: SeekBar, seekBarBlue: SeekBar)
-    {
+    private fun updatePreviewColor(previewColorView: View, seekBarRed: SeekBar, seekBarGreen: SeekBar, seekBarBlue: SeekBar) {
         previewColorView.setBackgroundColor(Color.rgb(seekBarRed.progress, seekBarGreen.progress, seekBarBlue.progress))
     }
 }
